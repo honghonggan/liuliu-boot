@@ -1,9 +1,30 @@
 <template>
-  <a-card :bordered="false">
-    <!-- 查询区域 -->
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline" @keyup.enter.native="searchQuery">
+  <a-card :bordered="false">                      //包裹整个内容，设置无边框
+    <!-- 查询区域 -->                             
+    --*/
+    <div class="table-page-search-wrapper">         //用于查询条件的输入，目前还未添加字段
+      --<a-form layout="inline" @keyup.enter.native="searchQuery">
         <a-row :gutter="24">
+          <!--租户搜索（假设是下拉选择）-->
+          <a-col :span="12">
+            <a-select v-model="seletedTenant" placeholder="请选择租户">    --绑定下拉选择框的值到 selectedTenant 变量。
+              <a-select-option v-for="tenant in tenants" :key="tenant.id" :value="tenant.id">
+                {{ tenant.name }}
+              </a-select-option>
+            </a-select>
+          </a-col>
+          <!--租户名字搜索（文本输入框）-->
+          <a-col :span="12">
+            <a-input/
+              v-model="tenantNameQuery"      ---绑定文本输入框的值到 tenantNameQuery 变量。
+              placeholder="输入租户名字"
+              @keyup.enter="handleSearch">  --在文本输入框中按下回车键时，调用 handleSearch 方法。
+          </a-col>
+          <!-提交按钮--->
+          <a-col :span="12" :offset="-12">
+            <a-button type="primary" html_type="submit">搜索</a-button>
+          </a-col>
+            
         </a-row>
       </a-form>
     </div>
@@ -11,8 +32,8 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator">
-      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-      <a-dropdown v-if="selectedRowKeys.length > 0">
+      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>    //新增按钮，点击后触发handleAdd方法
+      <a-dropdown v-if="selectedRowKeys.length > 0">           //批量操作下拉菜单，选中至少一项时显示，包含删除操作
         <a-menu slot="overlay">
           <a-menu-item key="1" @click="batchDel"><a-icon type="delete"/>删除</a-menu-item>
         </a-menu>
